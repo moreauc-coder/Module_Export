@@ -1,55 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
-
     <template id="export">
-
-
         <t t-call="website.layout">
             <t t-set="title">Export</t>
             <div class="oe_structure">
-
-            <form method="POST" name="form_ecole_partner_school" onsubmit="return false;">
-                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <form method="POST" id="form_data" name="form_ecole_partner_school" onsubmit="return result_requests_export()">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <div class="list_checkbox_ecole_partner_school">
-                        <t t-foreach="fields_ecole_partner_school" t-as="rec">
+                        <t t-foreach="fields_model" t-as="rec">
                             <label class="label_ecole_partner_school">
-                                <input type="checkbox" id="checkbox_ecole_partner_school" t-att-name="rec.field_description" t-att-value="rec.name" ></input>
-                                <span class="checkmark"></span>
+                                <input type="checkbox" id="checkbox_ecole_partner_school" class="checkbox_fields" t-att-name="rec.field_description" t-att-value="rec.name"/>
+                                <span class="checkmark"/>
                                 <t t-esc="rec.field_description"/>
                             </label>
                         </t>
                     </div>
                     <div class="btn_form_ecole_partner_school">
-                        <input value="Aperçu" type="submit" class="btn btn-outline-primary" name="btn_form_ecole_partner_school" data-toggle="modal" data-target="#myModalResult" onclick="result_requests_export()"/>
+                        <input value="Aperçu" type="submit" class="btn btn-outline-primary" name="btn_form_ecole_partner_school" data-toggle="modal" data-target="#myModalResult"/>
                     </div>
-            </form>
-                 <div id="myModalResult" class="modal fade" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">X</button>
-                                        <h4 class="modal-title">Détail de la demande</h4>
-                                    </div>
-                                    <div class="modal-body" style="display:flex;justify-content:center;">
-                                        <iframe id="request_export" width="1200" height="590" frameborder="0" marginheight="0" marginwidth="0" />
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                    </div>
-                                </div>
+                </form>
+                <div id="myModalResult" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">X</button>
+                                <h4 class="modal-title">Aperçu de l'export</h4>
                             </div>
-                 </div>
+                            <div class="modal-body" style="display:flex;justify-content:center;">
+                                <iframe id="request_export" width="1200" height="590" frameborder="0" marginheight="0" marginwidth="0" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
         </t>
-
         <script src="/export_view_parthenay/static/src/javascript/export_view_parthenay.js" type="text/javascript"/>
-
     </template>
-
-
 
     <template id="modal">
          <t t-call="website.layout">
@@ -59,7 +49,7 @@
                             <table class="table table-striped">
                                   <thead>
                                       <tr>
-                                          <t t-foreach="checked_form_ecole_partner_school" t-as="field_check">
+                                          <t t-foreach="fields_checked" t-as="field_check">
                                               <th><t t-esc="field_check"/></th>
                                           </t>
                                       </tr>
@@ -67,7 +57,6 @@
                                   <tbody>
                                       <tr>
                                       </tr>
-
                                   </tbody>
                               </table>
                             </div>

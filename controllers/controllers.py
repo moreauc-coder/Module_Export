@@ -1,8 +1,5 @@
 from odoo import http, fields, api
-from ..models import export_student
 from odoo.http import request
-import datetime
-import dateutil.relativedelta
 from odoo.tools.misc import xlwt
 import io
 import base64
@@ -10,76 +7,28 @@ import base64
 import logging
 _logger = logging.getLogger(__name__)
 
-class ExportEleve(http.Controller):
 
+class ExportList(http.Controller):
 
     @http.route('/export_fichier/', auth='user', website=True, type='http',csrf=True, method=['POST'])
     def indexExport(self, **post):
-        champs = http.request.env['ecole.partner.school'].search([])
 
+        # retourne des choses au template export est un id
+        fields_model = http.request.env['ir.model.fields'].search([('model', '=', 'ecole.partner.school')])  # A rendre dynamique
 
-        for i in champs:
-            print(i.partner_id.name)
-            print(i.resp_town1)
-
-        # retourne des choses au template  export est un id
-
-        fields_ecole_partner_school = http.request.env['ir.model.fields'].search([('model', '=', 'ecole.partner.school')])
-
-        for rec in fields_ecole_partner_school:
-            print(rec.field_description)
-
-
-        # print(checked_form_ecole_partner_school)
-        # if request.httprequest.method == 'POST':
-        #     if post.get('btn_form_ecole_partner_school', False):
-        #         for rec in fields_ecole_partner_school:
-        #             if post.get(rec.field_description, False):
-        #                 value_check = post.get(rec.field_description, False)
-        #                 for champ in champs:
-        #                     checked_form_ecole_partner_school.append(champ.eval(value_check))
-        #
-        # print(checked_form_ecole_partner_school)
-
-        return http.request.render('export_view_parthenay.export',{
-
-            'champs': champs,
-            'fields_ecole_partner_school': fields_ecole_partner_school,
-
-
-
+        return http.request.render('export_view_parthenay.export', {
+            'fields_model': fields_model,
         })
 
-
-    @http.route('/tableau_export_fichier/', auth='user', website=True, type='http', csrf=False, method=['POST'])
-    def TableExport(self, **post):
-
-        fields_ecole_partner_school = http.request.env['ir.model.fields'].search(
-            [('model', '=', 'ecole.partner.school')])
-        checked_form_ecole_partner_school = []
-        # recuperer les cases cochées du form pour le mettre dans le tableau, append = mettre dans un tableau
-        if request.httprequest.method == 'POST':
-            if post.get('btn_form_ecole_partner_school', False):
-                for rec in fields_ecole_partner_school:
-                    if post.get(rec.field_description, False):
-                        checked_form_ecole_partner_school.append(post.get(rec.field_description, True))
-                        # for champ in champs:
-                        #     checked_form_ecole_partner_school.append(post.get(champ.field_description, True))
-
-        print(checked_form_ecole_partner_school)
+    @http.route('/tableau_export_fichier/<fields_checked>', auth='user', website=True, type='http', csrf=False, method=['POST'])
+    def tableauExport(self, fields_checked, **post):
 
         return http.request.render('export_view_parthenay.modal', {
-
-            'checked_form_ecole_partner_school': checked_form_ecole_partner_school,
-
+            'fields_checked': fields_checked.split(","),
         })
-
-
 
     @http.route('/Telechargement_Fichier/<checked_form_ecole_partner_school>', auth='user', website=True, type='http', method=['POST'])
     def download_file(self,**post):
-
-
         if request.httprequest.method == 'POST':
             if post.get('input_download_file', False):
                 if post.get('checked_form_ecole_partner_school', False):
