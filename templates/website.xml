@@ -1,0 +1,8 @@
+<odoo>
+	<template id="add_css_export_view_parthenay" inherit_id="web.assets_frontend">
+		<xpath expr="." position="inside">
+			<link id="export_view_parthenay" rel="stylesheet" href="/export_view_parthenay/static/src/css/export_view_parthenay.css" />
+			<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
+		</xpath>
+	</template>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vue formulaire lié à l'action -->
+    <record id="export_student" model="ir.ui.view">
+        <field name="name">Export Student</field>
+        <field name="model">export.student</field>
+        <field name="arch" type="xml">
+            <form>
+                <group col="2">
+                    <p>Sélectionnez le groupe de champs que vous souhaitez voir dans le fichier :</p>
+                </group>
+                <group string="L'enfant" col="2">
+                    <field name="student_contact_information" />
+                </group>
+                <group string="L'inscription scolaire" col="6">
+                    <field name="student_school_information" />
+                    <field name="student_school_information_details" />
+                    <field name="responsible_school_contact_information" />
+                </group>
+                <group string="L'inscription restauration scolaire" col="6">
+                    <field name="student_school_catering_information" />
+                    <field name="student_school_catering_information_details" />
+                    <field name="responsible_school_catering_contact_information" />
+                </group>
+                <group string="L'inscription garderie" col="6">
+                    <field name="student_nursery_information" />
+                    <field name="student_nursery_information_details" />
+                    <field name="responsible_nursery_contact_information" />
+                </group>
+                <group string="Génération du fichier" col="4">
+                    <field name="file_name" required="True"/>
+                    <field name="excel_file" readonly="1" filename="file_name"/>
+                </group>
+                <footer>
+                    <!-- Le name du bouton est lié à la fonction qui est sous le même nom -->
+                    <button name="set_export_student" string="Export student xls" class="oe_right oe_highlight"
+                            type="object" />
+                    <button string="Cancel" class="oe_right" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Permet de définir une action -->
+    <act_window id="export_student_action"
+                name="Export Student Action"
+                res_model="export.student"
+                src_model="ecole.partner.school"
+                view_mode="form"
+                view_id="export_student"
+                target="new"
+                multi="True" />
+</odoo>

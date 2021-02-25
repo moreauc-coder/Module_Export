@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <template id="export">
+
+
+        <t t-call="website.layout">
+            <t t-set="title">Export</t>
+            <div class="oe_structure">
+
+            <form method="POST" name="form_ecole_partner_school" onsubmit="return false;">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="list_checkbox_ecole_partner_school">
+                        <t t-foreach="fields_ecole_partner_school" t-as="rec">
+                            <label class="label_ecole_partner_school">
+                                <input type="checkbox" id="checkbox_ecole_partner_school" t-att-name="rec.field_description" t-att-value="rec.name" ></input>
+                                <span class="checkmark"></span>
+                                <t t-esc="rec.field_description"/>
+                            </label>
+                        </t>
+                    </div>
+                    <div class="btn_form_ecole_partner_school">
+                        <input value="Aperçu" type="submit" class="btn btn-outline-primary" name="btn_form_ecole_partner_school" data-toggle="modal" data-target="#myModalResult" onclick="result_requests_export(checked_form_ecole_partner_school)"/>
+                    </div>
+            </form>
+                 <div id="myModalResult" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">X</button>
+                                        <h4 class="modal-title">Détail de la demande</h4>
+                                    </div>
+                                    <div class="modal-body" style="display:flex;justify-content:center;">
+                                        <iframe id="request_export" width="1200" height="590" frameborder="0" marginheight="0" marginwidth="0" />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                 </div>
+            </div>
+
+        </t>
+
+    </template>
+
+
+
+    <template id="modal">
+         <t t-call="website.layout">
+             <t t-set="title">Tableau_Export</t>
+                <div class="oe_structure">
+                        <div class="table_export">
+                            <table class="table table-striped">
+                                  <thead>
+                                      <tr>
+                                          <t t-foreach="checked_form_ecole_partner_school" t-as="field_check">
+                                              <th><t t-esc="field_check"/></th>
+                                          </t>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                      </tr>
+
+                                  </tbody>
+                              </table>
+                            </div>
+                    <form method="POST" action="/Telechargement_Fichier/">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="checked_form_ecole_partner_school" t-att-value="checked_form_ecole_partner_school"/>
+                        <input type="text" placeholder="Entrer le nom de votre fichier" name="name_file" t-att-value="name_file"/>
+                        <input value="Exporter le fichier" type="submit" class="btn btn-outline-primary" name="input_download_file" ></input>
+                    </form>
+<!--                    <span t-esc="download_file(checked_form_ecole_partner_school)"></span>-->
+             </div>
+         </t>
+<!--            <t t-if="not error_access">-->
+<!--                <script src="https://code.jquery.com/jquery-3.3.1.js"/>-->
+<!--                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"/>-->
+<!--                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"/>-->
+<!--                <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>-->
+<!--                <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"/>-->
+<!--                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"/>-->
+<!--                <script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"/>-->
+        <!--            </t>-->
+
+    </template>
+    <script src="/export_view_parthenay/static/src/javascript/export_view_parthenay.js" type="text/javascript"/>
+
+
+
+</odoo>
