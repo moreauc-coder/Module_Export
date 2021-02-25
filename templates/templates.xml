@@ -21,7 +21,7 @@
                         </t>
                     </div>
                     <div class="btn_form_ecole_partner_school">
-                        <input value="Aperçu" type="submit" class="btn btn-outline-primary" name="btn_form_ecole_partner_school" data-toggle="modal" data-target="#myModalResult" onclick="result_requests_export(checked_form_ecole_partner_school)"/>
+                        <input value="Aperçu" type="submit" class="btn btn-outline-primary" name="btn_form_ecole_partner_school" data-toggle="modal" data-target="#myModalResult" onclick="result_requests_export()"/>
                     </div>
             </form>
                  <div id="myModalResult" class="modal fade" role="dialog">
@@ -44,6 +44,8 @@
             </div>
 
         </t>
+
+        <script src="/export_view_parthenay/static/src/javascript/export_view_parthenay.js" type="text/javascript"/>
 
     </template>
 
@@ -89,7 +91,6 @@
         <!--            </t>-->
 
     </template>
-    <script src="/export_view_parthenay/static/src/javascript/export_view_parthenay.js" type="text/javascript"/>
 
 
 

@@ -67,7 +67,6 @@ class ExportEleve(http.Controller):
                         #     checked_form_ecole_partner_school.append(post.get(champ.field_description, True))
 
         print(checked_form_ecole_partner_school)
-        checked_form_ecole_partner_school_2 = checked_form_ecole_partner_school
 
         return http.request.render('export_view_parthenay.modal', {
 

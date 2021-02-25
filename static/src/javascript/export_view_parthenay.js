@@ -1,4 +1,5 @@
-function result_requests_export(checked_form_ecole_partner_school){
+function result_requests_export(){
+
 
     var $checked_form_ecole_partner_school = checked_form_ecole_partner_school.toString();
 
