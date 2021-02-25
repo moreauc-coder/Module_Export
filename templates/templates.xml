@@ -9,7 +9,7 @@
                     <div class="list_checkbox_ecole_partner_school">
                         <t t-foreach="fields_model" t-as="rec">
                             <label class="label_ecole_partner_school">
-                                <input type="checkbox" id="checkbox_ecole_partner_school" class="checkbox_fields" t-att-name="rec.field_description" t-att-value="rec.name"/>
+                                <input type="checkbox" class="checkbox_fields" t-att-name="rec.field_description" t-att-value="rec.field_description"/>
                                 <span class="checkmark"/>
                                 <t t-esc="rec.field_description"/>
                             </label>
