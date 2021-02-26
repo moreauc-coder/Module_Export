@@ -8,11 +8,16 @@ function result_requests_export(){
             checkbox_field_list.push(checkbox_field);
         }
     }
-    alert(checkbox_field_list);
     document.getElementById("request_export").src = '/tableau_export_fichier/'+checkbox_field_list.toString();
 
     return false;
-//    var $checked_form_ecole_partner_school = checked_form_ecole_partner_school.toString();
-//
-//    $("#request_export").attr('src', "/tableau_export_fichier/"+fields_checked.toString());
+}
+
+
+// Cacher le menu pour l'iframe
+if (document.getElementsByTagName('header')){
+    document.getElementsByTagName('header')[0].style.display = "none";
+}
+if (document.getElementById('oe_main_menu_navbar')){
+    document.getElementById('oe_main_menu_navbar').style.display = "none";
 }

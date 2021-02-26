@@ -60,27 +60,14 @@
                                   </tbody>
                               </table>
                             </div>
-                    <form method="POST" action="/Telechargement_Fichier/">
+                    <form method="POST" action="/telechargement_fichier/">
                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                        <input type="hidden" name="checked_form_ecole_partner_school" t-att-value="checked_form_ecole_partner_school"/>
+                        <input type="hidden" name="fields_checked" t-att-value="fields_checked"/>
                         <input type="text" placeholder="Entrer le nom de votre fichier" name="name_file" t-att-value="name_file"/>
-                        <input value="Exporter le fichier" type="submit" class="btn btn-outline-primary" name="input_download_file" ></input>
+                        <input value="Exporter le fichier" type="submit" class="btn btn-outline-primary" name="input_download_file"/>
                     </form>
-<!--                    <span t-esc="download_file(checked_form_ecole_partner_school)"></span>-->
              </div>
          </t>
-<!--            <t t-if="not error_access">-->
-<!--                <script src="https://code.jquery.com/jquery-3.3.1.js"/>-->
-<!--                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"/>-->
-<!--                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"/>-->
-<!--                <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>-->
-<!--                <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"/>-->
-<!--                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"/>-->
-<!--                <script src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/datetime-moment.js"/>-->
-        <!--            </t>-->
-
+        <script src="/export_view_parthenay/static/src/javascript/export_view_parthenay.js" type="text/javascript"/>
     </template>
-
-
-
 </odoo>
