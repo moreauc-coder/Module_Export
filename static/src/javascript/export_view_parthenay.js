@@ -13,7 +13,6 @@ function result_requests_export(){
     return false;
 }
 
-
 // Cacher le menu pour l'iframe
 if (document.getElementsByTagName('header')){
     document.getElementsByTagName('header')[0].style.display = "none";

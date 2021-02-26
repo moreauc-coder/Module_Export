@@ -5,4 +5,10 @@
 			<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
 		</xpath>
 	</template>
+
+	<template id="assets_backend" name="add  assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script src="/export_view_parthenay/static/src/javascript/button_export.js" type="text/javascript"/>
+        </xpath>
+    </template>
 </odoo>

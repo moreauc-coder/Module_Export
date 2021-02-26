@@ -40,7 +40,7 @@ class ExportList(http.Controller):
                     fields_checked = fields_checked.replace("'", '')
                     fields_checked = fields_checked.replace('"', '')
                     # fields_checked = fields_checked.replace(' ', '')
-                    fields_checked = fields_checked.split(",")
+                    fields_checked = fields_checked.split(", ")
 
                     # Nom du fichier de sortie
                     name_file = post.get('name_file', False)

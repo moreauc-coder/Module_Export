@@ -30,6 +30,7 @@
         # 'static/src/css/export_view_parthenay.css',
     ],
     'qweb': [
+        'static/src/xml/button_export.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
