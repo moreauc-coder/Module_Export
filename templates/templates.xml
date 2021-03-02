@@ -6,6 +6,12 @@
             <div class="oe_structure">
                 <form method="POST" id="form_data" name="form_ecole_partner_school" onsubmit="return result_requests_export()">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="all_check_div">
+                        <label class="all_check"> Tout cocher
+                            <input type="checkbox" name="checkAll" id="all" onclick="check()"/>
+                            <span class="checkmark2"></span>
+                        </label>
+                    </div>
                     <div class="list_checkbox_ecole_partner_school">
                         <t t-foreach="fields_model" t-as="rec">
                             <label class="label_ecole_partner_school">
@@ -15,6 +21,7 @@
                             </label>
                         </t>
                     </div>
+                    <input type="hidden" id="data_back" name="data_back" t-att-value="data_back"/>
                     <div class="btn_form_ecole_partner_school">
                         <input value="Aperçu" type="submit" class="btn btn-outline-primary" name="btn_form_ecole_partner_school" data-toggle="modal" data-target="#myModalResult"/>
                     </div>
@@ -60,10 +67,10 @@
                                   </tbody>
                               </table>
                             </div>
-                    <form method="POST" action="/telechargement_fichier/">
+                    <form method="POST" action="/telechargement_fichier/" class="form_export">
                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                         <input type="hidden" name="fields_checked" t-att-value="fields_checked"/>
-                        <input type="text" placeholder="Entrer le nom de votre fichier" name="name_file" t-att-value="name_file"/>
+                        <input type="text" placeholder="Entrer le nom de votre fichier" name="name_file" class="name_file" t-att-value="name_file" required="required"/>
                         <input value="Exporter le fichier" type="submit" class="btn btn-outline-primary" name="input_download_file"/>
                     </form>
              </div>

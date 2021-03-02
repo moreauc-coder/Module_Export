@@ -11,12 +11,12 @@ class ExportStudent(models.Model):
     _name = 'export.student'
 
     # Fonction qui permet de récupérer les élèves actifs de la liste (cochés)
-    def _get_default_students(self):
+    def get_default_students(self):
         return self.env['ecole.partner.school'].browse(self.env.context.get('active_ids'))
 
     # Champs de relation avec la table ecole.partner.school afin de récupérer la liste des enfants
     # Défaut = par défaut, appel la fonction qui récupère les enfants actifs
-    student_ids = fields.Many2many('ecole.partner.school', String="Students", default=_get_default_students)
+    student_ids = fields.Many2many('ecole.partner.school', String="Students", default=get_default_students)
     # Création d'un champ binaire dans la base pour stocker le fichier généré
     excel_file = fields.Binary(string="excel file")
     # Création d'un champ de type char avec une tailel de 64 caractères pour le nom du fichier
@@ -40,6 +40,16 @@ class ExportStudent(models.Model):
     student_nursery_information = fields.Boolean(string="Student nursery information")
     student_nursery_information_details = fields.Boolean(string="Student nursery information details")
     responsible_nursery_contact_information = fields.Boolean(string="Responsible nursery contact information")
+
+    @api.model
+    def get_active_records(self):
+        # records = self.student_ids
+        # active_ids = self.ids
+        # active_ids_two = self.env.context.get('active_ids', [])
+        # print(records)
+        # print(active_ids)
+        # print(active_ids_two)
+        return [['ecole.partner.school'], [8574, 8523]]
 
     # Fonction qui permet d'exporter les données dans un fichier excel
     @api.multi
