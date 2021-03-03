@@ -4,6 +4,8 @@ from odoo.tools.misc import xlwt
 import io
 import base64
 import werkzeug
+from datetime import date, datetime, timedelta
+
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -30,6 +32,7 @@ class ExportList(http.Controller):
         ids = []
         result_for_excel = []
         libelle_field = []
+        vals = {}
 
         data_back = data_back.replace('[', '')
         data_back = data_back.replace(']', '')
@@ -41,28 +44,40 @@ class ExportList(http.Controller):
 
         fields_checked = fields_checked.split(",")
         object_field = http.request.env['ir.model.fields']
+        # f_checked = ""
         for field_checked in fields_checked:
             field_model = object_field.search([('model', '=', data_back[0]),
                                                ('field_description', '=', field_checked)], limit=1)
-            if field_model.ttype == "date":
-                print(f"date ---> {field_model.name}")
+            # if field_model.ttype == "date":
+            #     print(f"date ---> {field_model.name}")
                 # Ici il faut transformer la date et l'ajouter à libelle_field'
+                # field_model_convert = datetime.strptime(field_model.name, "%Y-%m-%d %H:M:S").strftime("%d/%m/%Y")
 
-            elif field_model.ttype == "many2one":
+            if field_model.ttype == "many2one":
                 libelle_field.append(field_model.name + '.name')
             else:
                 libelle_field.append(field_model.name)
+            # Construction du dictionnaire de valeurs
+            # vals.update({
+            #     field_checked: result,
+            # })
 
-        value_model = http.request.env['ecole.partner.school'].browse(ids)
+        value_model = http.request.env[data_back[0]].browse(ids)
+        vals = {}
         for i in libelle_field:
             result = value_model.mapped(i)
             print(f"{i} -- > {result}")
+            vals.update({
+                i: result,
+            })
             result_for_excel.append(result)
         print(result_for_excel)
 
         return http.request.render('export_view_parthenay.modal', {
             'fields_checked': fields_checked,
             'result_for_excel': result_for_excel,
+            'vals': vals,
+            'ids': ids,
         })
 
     @http.route('/telechargement_fichier/', auth='user', website=True, type='http', method=['POST'])

@@ -56,14 +56,31 @@
                             <table class="table table-striped">
                                   <thead>
                                       <tr>
-                                          <t t-foreach="fields_checked" t-as="field_check">
-                                              <th><t t-esc="field_check"/></th>
+                                          <t t-foreach="vals" t-as="item">
+                                              <th><t t-esc="item"/></th>
                                           </t>
                                       </tr>
                                   </thead>
                                   <tbody>
-                                      <tr>
-                                      </tr>
+                                      <t t-set="i" t-value="0"/>
+                                      <t t-foreach="ids" t-as="record">
+                                          <tr>
+                                            <t t-foreach="vals" t-as="item">
+                                                <t t-if="len(item_value) > i">
+                                                    <t t-if="item_value[i]">
+                                                        <td><t t-esc="item_value[i]"/></td>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <td> </td>
+                                                    </t>
+                                                </t>
+                                                <t t-else="">
+                                                    <td> </td>
+                                                </t>
+                                            </t>
+                                          </tr>
+                                      <t t-set="i" t-value="i+1"/>
+                                      </t>
                                   </tbody>
                               </table>
                             </div>
