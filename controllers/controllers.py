@@ -5,6 +5,7 @@ import io
 import base64
 import werkzeug
 from datetime import date, datetime, timedelta
+import ast
 
 
 import logging
@@ -32,11 +33,7 @@ class ExportList(http.Controller):
         ids = []
         vals = {}
 
-        data_back = data_back.replace('[', '')
-        data_back = data_back.replace(']', '')
-        data_back = data_back.replace("'", '')
-        data_back = data_back.replace('"', '')
-        data_back = data_back.split(", ")
+        data_back = ast.literal_eval(data_back)  # On reconstitue le tableau qui était en format str
         for data in data_back[1:]:
             ids.append(int(data))
 
@@ -88,24 +85,8 @@ class ExportList(http.Controller):
     def download_file(self, **post):
         if request.httprequest.method == 'POST':
             if post.get('input_download_file', False):
-                # if post.get('vals', False):
-                #     data_result = post.get('vals', False)
-                #     print(data_result)
-                #     data_result = data_result.replace('[', '')
-                #     data_result = data_result.replace(']', '')
-                #     data_result = data_result.replace("'", '')
-                #     data_result = data_result.replace('"', '')
-                #     # data_result = data_result.replace(' ', '')
-                if post.get('fields_checked', False):
-
-                    fields_checked = post.get('fields_checked', False)
-                    fields_checked = fields_checked.replace('[', '')
-                    fields_checked = fields_checked.replace(']', '')
-                    fields_checked = fields_checked.replace("'", '')
-                    fields_checked = fields_checked.replace('"', '')
-                    # fields_checked = fields_checked.replace(' ', '')
-                    fields_checked = fields_checked.split(", ")
-
+                if post.get('vals', False):
+                    data_result = ast.literal_eval(post.get('vals', False))  # On reconstitue le dictionnaire qui était en format str
                     # Nom du fichier de sortie
                     name_file = post.get('name_file', False)
                     filename = str(name_file)+'.xls'
@@ -139,8 +120,8 @@ class ExportList(http.Controller):
                     row = 0
                     column = 0
                     if row == 0:
-                        for field_checked in fields_checked:
-                            worksheet.write(row, column, field_checked, for_left)
+                        for data_r in data_result:
+                            worksheet.write(row, column, data_r, for_left)
                             column += 1
 
                     fp = io.BytesIO()

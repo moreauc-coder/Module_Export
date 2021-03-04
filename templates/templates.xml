@@ -87,6 +87,7 @@
                     <form method="POST" action="/telechargement_fichier/" class="form_export">
                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                         <input type="hidden" name="fields_checked" t-att-value="fields_checked"/>
+                        <t t-set="i" t-value="i+1"/>
                         <input type="hidden" name="vals" t-att-value="vals"/>
                         <input type="text" placeholder="Entrer le nom de votre fichier" name="name_file" class="name_file" t-att-value="name_file" required="required"/>
                         <input value="Exporter le fichier" type="submit" class="btn btn-outline-primary" name="input_download_file"/>
