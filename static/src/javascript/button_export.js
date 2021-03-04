@@ -38,7 +38,7 @@ odoo.define('export_view_parthenay', function (require) {
 //                    window.open('/export_fichier/', '_blank');
 //                };
                 console.log("Done");
-                alert(result);
+//                alert(result);
                 window.open('/export_fichier/'+result.toString(), '_blank');
             });
 //            window.open('/export_fichier/', '_blank');

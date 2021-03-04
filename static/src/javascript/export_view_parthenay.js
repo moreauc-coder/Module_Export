@@ -9,7 +9,7 @@ function result_requests_export(){
             checkbox_field_list.push(checkbox_field);
         }
     }
-    alert(data_back.value.toString());
+//    alert(data_back.value.toString());
     document.getElementById("request_export").src = '/tableau_export_fichier/'+checkbox_field_list.toString()+'/'+data_back.value.toString();
 
     return false;

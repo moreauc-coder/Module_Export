@@ -49,7 +49,7 @@ class ExportStudent(models.Model):
         # print(records)
         # print(active_ids)
         # print(active_ids_two)
-        return [['ecole.partner.school'], [8574, 8523]]
+        return [['ecole.partner.school'], [8569, 8567, 8574, 8523]]
 
     # Fonction qui permet d'exporter les données dans un fichier excel
     @api.multi

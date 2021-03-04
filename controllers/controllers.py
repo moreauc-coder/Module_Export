@@ -62,7 +62,10 @@ class ExportList(http.Controller):
 
             elif field_model.ttype == "many2one":
                 libelle = field_model.field_description
-                search_field = field_model.name + '.name'
+                if field_model.field_description != "Période":
+                    search_field = field_model.name + '.name'
+                else:
+                    search_field = field_model.name + '.school_years'
                 result = value_model.mapped(search_field)
                 vals.update({
                     libelle: result,
@@ -85,6 +88,14 @@ class ExportList(http.Controller):
     def download_file(self, **post):
         if request.httprequest.method == 'POST':
             if post.get('input_download_file', False):
+                # if post.get('vals', False):
+                #     data_result = post.get('vals', False)
+                #     print(data_result)
+                #     data_result = data_result.replace('[', '')
+                #     data_result = data_result.replace(']', '')
+                #     data_result = data_result.replace("'", '')
+                #     data_result = data_result.replace('"', '')
+                #     # data_result = data_result.replace(' ', '')
                 if post.get('fields_checked', False):
 
                     fields_checked = post.get('fields_checked', False)
