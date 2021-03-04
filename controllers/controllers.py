@@ -68,9 +68,17 @@ class ExportList(http.Controller):
                     libelle: result,
                 })
             else:
+                result = []
                 libelle = field_model.field_description
                 search_field = field_model.name
-                result = value_model.mapped(search_field)
+                result_values = value_model.mapped(search_field)
+                for result_value in result_values:
+                    if result_value == True:
+                        result.append('OUI')
+                    elif result_value == False:
+                        result.append('NON')
+                    else:
+                        result.append(result_value)
                 vals.update({
                     libelle: result,
                 })
@@ -125,10 +133,6 @@ class ExportList(http.Controller):
                             worksheet.write(row, column, key, for_left)
                             i = 1
                             for value in values:
-                                if value == False:
-                                    value = 'NON'
-                                elif value == True:
-                                    value = 'OUI'
                                 worksheet.write(row + i, column, value, for_left_not_bold)
                                 i += 1
                             column += 1
