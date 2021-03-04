@@ -30,8 +30,6 @@ class ExportList(http.Controller):
     @http.route('/tableau_export_fichier/<fields_checked>/<data_back>', auth='user', website=True, type='http', csrf=False, method=['POST'])
     def tableauExport(self, fields_checked, data_back, **post):
         ids = []
-        result_for_excel = []
-        libelle_field = []
         vals = {}
 
         data_back = data_back.replace('[', '')
@@ -44,38 +42,41 @@ class ExportList(http.Controller):
 
         fields_checked = fields_checked.split(",")
         object_field = http.request.env['ir.model.fields']
-        # f_checked = ""
+        value_model = http.request.env[data_back[0]].browse(ids)  # Recherche les ids dans la table (ecole.partner.school)
+
         for field_checked in fields_checked:
             field_model = object_field.search([('model', '=', data_back[0]),
                                                ('field_description', '=', field_checked)], limit=1)
-            # if field_model.ttype == "date":
-            #     print(f"date ---> {field_model.name}")
-                # Ici il faut transformer la date et l'ajouter à libelle_field'
-                # field_model_convert = datetime.strptime(field_model.name, "%Y-%m-%d %H:M:S").strftime("%d/%m/%Y")
+            if field_model.ttype == "date":
+                libelle = field_model.field_description  # Libellé français
+                search_field = field_model.name  # Nom de la colonne
+                value_date = []  # Récupère les dates converties
+                for rec in value_model.mapped(search_field):
+                    if rec and rec != 'False':
+                        value_date.append(datetime.strptime(rec, "%Y-%m-%d").strftime("%d/%m/%Y"))
+                    else:
+                        value_date.append(" ")
+                vals.update({
+                    libelle: value_date,
+                })
 
-            if field_model.ttype == "many2one":
-                libelle_field.append(field_model.name + '.name')
+            elif field_model.ttype == "many2one":
+                libelle = field_model.field_description
+                search_field = field_model.name + '.name'
+                result = value_model.mapped(search_field)
+                vals.update({
+                    libelle: result,
+                })
             else:
-                libelle_field.append(field_model.name)
-            # Construction du dictionnaire de valeurs
-            # vals.update({
-            #     field_checked: result,
-            # })
-
-        value_model = http.request.env[data_back[0]].browse(ids)
-        vals = {}
-        for i in libelle_field:
-            result = value_model.mapped(i)
-            print(f"{i} -- > {result}")
-            vals.update({
-                i: result,
-            })
-            result_for_excel.append(result)
-        print(result_for_excel)
+                libelle = field_model.field_description
+                search_field = field_model.name
+                result = value_model.mapped(search_field)
+                vals.update({
+                    libelle: result,
+                })
 
         return http.request.render('export_view_parthenay.modal', {
             'fields_checked': fields_checked,
-            'result_for_excel': result_for_excel,
             'vals': vals,
             'ids': ids,
         })
