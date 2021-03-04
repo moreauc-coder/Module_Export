@@ -7,8 +7,8 @@ import werkzeug
 from datetime import date, datetime, timedelta
 import ast
 
-
 import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -28,7 +28,8 @@ class ExportList(http.Controller):
             'data_back': data_back,
         })
 
-    @http.route('/tableau_export_fichier/<fields_checked>/<data_back>', auth='user', website=True, type='http', csrf=False, method=['POST'])
+    @http.route('/tableau_export_fichier/<fields_checked>/<data_back>', auth='user', website=True, type='http',
+                csrf=False, method=['POST'])
     def tableauExport(self, fields_checked, data_back, **post):
         ids = []
         vals = {}
@@ -39,8 +40,8 @@ class ExportList(http.Controller):
 
         fields_checked = fields_checked.split(",")
         object_field = http.request.env['ir.model.fields']
-        value_model = http.request.env[data_back[0]].browse(ids)  # Recherche les ids dans la table (ecole.partner.school)
-
+        # Recherche les ids dans la table (ecole.partner.school)
+        value_model = http.request.env[data_back[0]].browse(ids)
         for field_checked in fields_checked:
             field_model = object_field.search([('model', '=', data_back[0]),
                                                ('field_description', '=', field_checked)], limit=1)
@@ -52,11 +53,10 @@ class ExportList(http.Controller):
                     if rec and rec != 'False':
                         value_date.append(datetime.strptime(rec, "%Y-%m-%d").strftime("%d/%m/%Y"))
                     else:
-                        value_date.append(" ")
+                        value_date.append("-")
                 vals.update({
                     libelle: value_date,
                 })
-
             elif field_model.ttype == "many2one":
                 libelle = field_model.field_description
                 if field_model.field_description != "Période":
@@ -86,14 +86,15 @@ class ExportList(http.Controller):
         if request.httprequest.method == 'POST':
             if post.get('input_download_file', False):
                 if post.get('vals', False):
-                    data_result = ast.literal_eval(post.get('vals', False))  # On reconstitue le dictionnaire qui était en format str
+                    # On reconstitue le dictionnaire qui était en format str
+                    data_result = ast.literal_eval(post.get('vals', False))
                     # Nom du fichier de sortie
                     name_file = post.get('name_file', False)
-                    filename = str(name_file)+'.xls'
+                    filename = str(name_file) + '.xls'
 
                     # Style du tableau Excel
                     workbook = xlwt.Workbook()
-                    worksheet = workbook.add_sheet('Export élèves')
+                    worksheet = workbook.add_sheet('Export')
                     font = xlwt.Font()
                     font.bold = True
                     for_left = xlwt.easyxf(
@@ -120,27 +121,28 @@ class ExportList(http.Controller):
                     row = 0
                     column = 0
                     if row == 0:
-                        for data_r in data_result:
-                            worksheet.write(row, column, data_r, for_left)
+                        for key, values in data_result.items():
+                            worksheet.write(row, column, key, for_left)
+                            i = 1
+                            for value in values:
+                                if value == False:
+                                    value = 'NON'
+                                elif value == True:
+                                    value = 'OUI'
+                                worksheet.write(row + i, column, value, for_left_not_bold)
+                                i += 1
                             column += 1
 
                     fp = io.BytesIO()
                     # Sauvegarde des fichiers apres écriture (write)
                     workbook.save(fp)
                     # Stockage sous forme binaire du fichier dans la base Odoo (table export.student)
-                    export_id = http.request.env['export.student'].create({'excel_file': base64.encodestring(fp.getvalue()),
-                                                                           'file_name': filename})
+                    export_id = http.request.env['export.student'].create(
+                        {'excel_file': base64.encodestring(fp.getvalue()),
+                         'file_name': filename})
                     fp.close()
 
                     url_file = '/web/binary/download_document_partner?model=export.student&field=excel_file&id=' + str(
                         export_id.id) + '&filename=' + filename
 
                     return werkzeug.utils.redirect(url_file)
-
-
-
-
-
-
-
-

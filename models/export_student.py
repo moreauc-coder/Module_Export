@@ -285,7 +285,6 @@ class ExportStudent(models.Model):
                                                                'file_name': filename})
         fp.close()
 
-
         # Retourne le même formulaire avec le fichier Excel récupéré
         return {
             'view_mode': 'form',
