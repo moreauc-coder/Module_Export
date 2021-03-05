@@ -49,21 +49,29 @@ class ExportList(http.Controller):
                 libelle = field_model.field_description  # Libellé français
                 search_field = field_model.name  # Nom de la colonne
                 value_date = []  # Récupère les dates converties
-                for rec in value_model.mapped(search_field):
-                    if rec and rec != 'False':
-                        value_date.append(datetime.strptime(rec, "%Y-%m-%d").strftime("%d/%m/%Y"))
+                for val in value_model:
+                    if val.mapped(search_field):
+                        if val.mapped(search_field)[0]:
+                            value_date.append(datetime.strptime(val.mapped(search_field)[0], "%Y-%m-%d").strftime("%d/%m/%Y"))
+                        else:
+                            value_date.append("-")
                     else:
                         value_date.append("-")
                 vals.update({
                     libelle: value_date,
                 })
             elif field_model.ttype == "many2one":
+                result = []
                 libelle = field_model.field_description
                 if field_model.field_description != "Période":
                     search_field = field_model.name + '.name'
                 else:
                     search_field = field_model.name + '.school_years'
-                result = value_model.mapped(search_field)
+                for val in value_model:
+                    if val.mapped(search_field):
+                        result.append(val.mapped(search_field)[0])
+                    else:
+                        result.append("-")
                 vals.update({
                     libelle: result,
                 })
@@ -71,14 +79,18 @@ class ExportList(http.Controller):
                 result = []
                 libelle = field_model.field_description
                 search_field = field_model.name
-                result_values = value_model.mapped(search_field)
-                for result_value in result_values:
-                    if result_value == True:
-                        result.append('OUI')
-                    elif result_value == False:
-                        result.append('NON')
+                for val in value_model:
+                    if val.mapped(search_field):
+                        if val.mapped(search_field)[0] == True:
+                            result.append('OUI')
+                        elif val.mapped(search_field)[0] == False or val.mapped(search_field)[0] == '':
+                            result.append('NON')
+                        else:
+                            result.append(val.mapped(search_field)[0])
                     else:
-                        result.append(result_value)
+                        result.append('-')
+
+                # result_values = value_model.mapped(search_field)
                 vals.update({
                     libelle: result,
                 })
