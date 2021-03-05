@@ -15,7 +15,7 @@
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
     # for the full list
     'category': 'Parthenay',
-    'version': '11.0.25.02.2021',
+    'version': '11.0.05.03.2021',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'website', 'ecole'],
