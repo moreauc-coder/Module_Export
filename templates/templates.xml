@@ -52,8 +52,15 @@
          <t t-call="website.layout">
              <t t-set="title">Tableau_Export</t>
                 <div class="oe_structure">
+                    <form method="POST" action="/telechargement_fichier/" class="form_export">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="fields_checked" t-att-value="fields_checked"/>
+                        <input type="hidden" name="vals" t-att-value="vals"/>
+                        <input type="text" placeholder="Entrer le nom de votre fichier" name="name_file" class="name_file" t-att-value="name_file" required="required"/>
+                        <input value="Exporter le fichier" type="submit" class="btn btn-outline-primary" name="input_download_file"/>
+                    </form>
                         <div class="table_export">
-                            <table class="table table-striped">
+                            <table class="table table-striped" >
                                   <thead>
                                       <tr>
                                           <t t-foreach="vals" t-as="item">
@@ -82,15 +89,8 @@
                                       <t t-set="i" t-value="i+1"/>
                                       </t>
                                   </tbody>
-                              </table>
-                            </div>
-                    <form method="POST" action="/telechargement_fichier/" class="form_export">
-                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                        <input type="hidden" name="fields_checked" t-att-value="fields_checked"/>
-                        <input type="hidden" name="vals" t-att-value="vals"/>
-                        <input type="text" placeholder="Entrer le nom de votre fichier" name="name_file" class="name_file" t-att-value="name_file" required="required"/>
-                        <input value="Exporter le fichier" type="submit" class="btn btn-outline-primary" name="input_download_file"/>
-                    </form>
+                            </table>
+                        </div>
              </div>
          </t>
         <script src="/export_view_parthenay/static/src/javascript/export_view_parthenay.js" type="text/javascript"/>
